@@ -1,0 +1,20 @@
+# Virtual environment
+venv/
+
+# Python files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Database files
+*.mysql
+
+# Django static files
+/staticfiles/
+
+# Environment variables
+.env
+
+# Other
+*.log
