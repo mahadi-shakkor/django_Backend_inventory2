@@ -19,8 +19,23 @@ class SignupForm(forms.Form):
         ('a', 'Aggricultural Officer'),
         ('f', 'Farmer'),
         ('c', 'Customer'),
+        ('s', 'Supplier'),
+        ('n', 'Neutroshonist'),
+        ('w', 'Wirehouse Manager'),
+        ('d', 'Distributor Company'),
+        ('r', 'Reatailer')
+
     ]
     
+# models.CharField(db_column='F', max_length=1, blank=True, null=True)  # Field name made lowercase.
+#      models.CharField(db_column='S', max_length=1, blank=True, null=True)  # Field name made lowercase.
+#      = models.CharField(db_column='N', max_length=1, blank=True, null=True)  # Field name made lowercase.
+#     = models.CharField(db_column='W', max_length=1, blank=True, null=True)  # Field name made lowercase.
+#     = models.CharField(db_column='C', max_length=1, blank=True, null=True)  # Field name made lowercase.
+#      = models.CharField(db_column='D', max_length=1, blank=True, null=True)  # Field name made lowercase.
+#      = models.CharField(db_column='R', max_length=1, blank=True, null=True)  # Field name made lowercase.
+#    
+
     Choosed_User_Type= forms.ChoiceField(
         choices=Users_Type,
         required=True,
