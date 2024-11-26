@@ -69,11 +69,22 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from .models import User, Location
 
+from django.shortcuts import render, redirect
+from .forms import SignupForm
+from .models import User, Location
+
 def signup(request):
+    last_user_id = None  # Default to None, if no users are registered yet.
+
+    # Fetch the last created user (most recent sign up)
+    last_user = User.objects.last()
+    if last_user:
+        last_user_id = last_user.userid+1
+
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            # Process the form data
+            # Process the form data and save the new user
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
@@ -83,11 +94,9 @@ def signup(request):
 
             # Check if the email already exists in the User model
             if User.objects.filter(email=email).exists():
-                # If email exists, show an error message and prevent saving
                 form.add_error('email', 'This email address is already registered.')
-                return render(request, 'signup.html', {'form': form})
+                return render(request, 'signup.html', {'form': form, 'last_user_id': last_user_id})
 
-            # Otherwise, proceed to save the new user
             A = ""
             F = ""
             C = ""
@@ -99,7 +108,7 @@ def signup(request):
             else:
                 C += user_choice
 
-            # Location details (you can adjust this as needed)
+            # Location details (can be customized)
             location = Location(
                 latitude=12.9716,
                 longitude=77.5946,
@@ -113,7 +122,7 @@ def signup(request):
             )
             location.save()
 
-            # Create a new User object and save it
+            # Create and save the new user
             user = User(
                 name=first_name + " " + last_name,
                 email=email,
@@ -130,21 +139,20 @@ def signup(request):
             )
 
             try:
-                user.save()  # Save the user to the database
+                user.save()
                 A = ""
                 F = ""
                 C = ""
 
                 # Redirect to a success page or login page
-                return redirect('login')  # Assuming you have a 'login' route
+                return redirect('login')
 
             except IntegrityError as e:
-                # Catch any database errors related to unique constraints or other issues
                 form.add_error(None, f"An error occurred while saving your account: {str(e)}")
-                return render(request, 'signup.html', {'form': form})
+                return render(request, 'signup.html', {'form': form, 'last_user_id': last_user_id})
 
     else:
         form = SignupForm()
 
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form, 'last_user_id': last_user_id})
 
