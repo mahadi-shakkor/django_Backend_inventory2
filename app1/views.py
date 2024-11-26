@@ -58,7 +58,7 @@ def login_view(request):
         form = LoginForm()
     
     return render(request, 'login.html', {'form': form})
-
+from .models import Location
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
@@ -72,8 +72,39 @@ def signup(request):
             user_choice = form.cleaned_data['Choosed_User_Type']  # Corrected field name
             
             # Here, you could save the user in the database or perform further actions
-            print(f"Saving user: {user_choice}, {first_name}, {last_name}, {email}, {phone}, {password}")
             
+            print(f"Saving user: {user_choice}, {first_name}, {last_name}, {email}, {phone}, {password}")
+          
+            location = Location(
+
+            latitude=12.9716,
+            longitude=77.5946,
+            street="MG Road",
+            city="Bangalore",
+            state="Karnataka",
+            country="India",
+            postalcode="560001",
+            altitude=920,
+            timezone="Asia/Kolkata"
+            )
+            location.save()
+            user = User(
+            name=first_name +" "+ last_name,
+            email=email,
+            password=password,
+            f="Y",  # Example value
+            s="N",  # Example value
+            n="Y",  # Example value
+            w="N",  # Example value
+            c="Y",  # Example value
+            d="N",  # Example value
+            r="Y",  # Example value
+            a="N",  # Example value
+            location=location
+            )
+        
+        # Save the User instance
+            user.save()
             # Redirect to a success page or login page
             return redirect('login')  # Assuming you have a 'login' route
 
