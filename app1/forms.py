@@ -6,6 +6,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 class SignupForm(forms.Form):
+    
     first_name = forms.CharField(max_length=100)
     last_name = forms.CharField(max_length=100)
     email = forms.EmailField()
@@ -23,4 +24,8 @@ class SignupForm(forms.Form):
         required=True,
         label=" User Type "
     )
-    
+    street = forms.CharField(max_length=255, required=False, widget=forms.TextInput(attrs={'placeholder': 'Street'}))
+    city = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'City'}))
+    state = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'State'}))
+    country = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'placeholder': 'Country'}))
+    postalcode = forms.CharField(max_length=20, required=False, widget=forms.TextInput(attrs={'placeholder': 'Postal Code'}))

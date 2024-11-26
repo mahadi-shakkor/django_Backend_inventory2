@@ -59,57 +59,92 @@ def login_view(request):
     
     return render(request, 'login.html', {'form': form})
 from .models import Location
+from django.db import IntegrityError
+from django.shortcuts import render, redirect
+from .forms import SignupForm
+from .models import User, Location
+
+from django.db import IntegrityError
+from django.shortcuts import render, redirect
+from .forms import SignupForm
+from .models import User, Location
+
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            # Process the form data and save it (e.g., create user or store data)
+            # Process the form data
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             phone = form.cleaned_data['phone']
             password = form.cleaned_data['password']
-            user_choice = form.cleaned_data['Choosed_User_Type']  # Corrected field name
-            
-            # Here, you could save the user in the database or perform further actions
-            
-            print(f"Saving user: {user_choice}, {first_name}, {last_name}, {email}, {phone}, {password}")
-          
-            location = Location(
+            user_choice = form.cleaned_data['Choosed_User_Type']
 
-            latitude=12.9716,
-            longitude=77.5946,
-            street="MG Road",
-            city="Bangalore",
-            state="Karnataka",
-            country="India",
-            postalcode="560001",
-            altitude=920,
-            timezone="Asia/Kolkata"
+            # Check if the email already exists in the User model
+            if User.objects.filter(email=email).exists():
+                # If email exists, show an error message and prevent saving
+                form.add_error('email', 'This email address is already registered.')
+                return render(request, 'signup.html', {'form': form})
+
+            # Otherwise, proceed to save the new user
+            A = ""
+            F = ""
+            C = ""
+
+            if user_choice == "a":
+                A += user_choice
+            elif user_choice == "f":
+                F += user_choice
+            else:
+                C += user_choice
+
+            # Location details (you can adjust this as needed)
+            location = Location(
+                latitude=12.9716,
+                longitude=77.5946,
+                street="MG Road",
+                city="Bangalore",
+                state="Karnataka",
+                country="India",
+                postalcode="560001",
+                altitude=920,
+                timezone="Asia/Kolkata"
             )
             location.save()
+
+            # Create a new User object and save it
             user = User(
-            name=first_name +" "+ last_name,
-            email=email,
-            password=password,
-            f="Y",  # Example value
-            s="N",  # Example value
-            n="Y",  # Example value
-            w="N",  # Example value
-            c="Y",  # Example value
-            d="N",  # Example value
-            r="Y",  # Example value
-            a="N",  # Example value
-            location=location
+                name=first_name + " " + last_name,
+                email=email,
+                password=password,
+                f=F,
+                s="",
+                n="",
+                w="",
+                c=C,
+                d="",
+                r="",
+                a=A,
+                location=location
             )
-        
-        # Save the User instance
-            user.save()
-            # Redirect to a success page or login page
-            return redirect('login')  # Assuming you have a 'login' route
+
+            try:
+                user.save()  # Save the user to the database
+                A = ""
+                F = ""
+                C = ""
+
+                # Redirect to a success page or login page
+                return redirect('login')  # Assuming you have a 'login' route
+
+            except IntegrityError as e:
+                # Catch any database errors related to unique constraints or other issues
+                form.add_error(None, f"An error occurred while saving your account: {str(e)}")
+                return render(request, 'signup.html', {'form': form})
 
     else:
         form = SignupForm()
-    
+
     return render(request, 'signup.html', {'form': form})
 

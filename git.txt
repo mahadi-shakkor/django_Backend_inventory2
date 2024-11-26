@@ -3,7 +3,7 @@ Push Subsequent Changes: After making changes to your project, stage, commit, an
 bash
 Copy code
 git add .
-git commit -m "Success fully save signup data in database"
+git commit -m "Sign up Near to close "
 git push origin main
 
 
