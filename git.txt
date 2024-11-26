@@ -4,7 +4,7 @@ bash
 Copy code
 git add .
 git commit -m "Description of changes"
-git push
+git push origin main
 
 
 ---------------
