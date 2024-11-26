@@ -3,7 +3,7 @@ Push Subsequent Changes: After making changes to your project, stage, commit, an
 bash
 Copy code
 git add .
-git commit -m "User Successfully And SignUp And Login And CAn Go dashboard And can go Logpot  "
+git commit -m " loged in user show in dashboard  "
 git push origin main
 
 

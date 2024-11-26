@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .forms import SignupForm
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -13,7 +12,6 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .forms import LoginForm
 from .models import User
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -24,23 +22,21 @@ from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 from .models import User, Location
-
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 from .models import User, Location
-
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 from .models import User, Location
-
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db import IntegrityError
 from .forms import SignupForm
 from .models import User, Location
-
-
+from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect
 from .forms import SignupForm
 
@@ -60,9 +56,11 @@ def login_view(request):
                 return render(request, 'login.html', {'form': form})
 
             # Now, authenticate the user
-            if user.check_password(password):  # Use the check_password method for hashed passwords
-                
-                return redirect('home')  # Redirect to home after successful login
+            if user.check_password(password):
+                context={"user":user}
+            # Use the check_password method for hashed passwords
+                return render(request, 'home.html',context)  # Pass 'uname' as a keyword argument
+        # Redirect to home after successful login
             else:
                 messages.error(request, "Invalid credentials")
 
@@ -71,16 +69,10 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-
-
-from django.shortcuts import render, redirect
-from django.contrib.auth import logout
 
 def home(request):
     if request.method == 'POST':
-        logout(request)  # Logs the user out
+        logout(request)  
         return redirect('login')  # Redirect to 'some_page' after logout
 
     return render(request, 'home.html')
