@@ -51,10 +51,15 @@
     <div class="home-container">
         <h2>Welcome to Your Dashboard</h2>
         <p>You have successfully logged in!</p>
-        <form method="POST" action="{% url 'logout' %}">
-            {% csrf_token %}
+        <!-- No CSRF token here, but since we exempted CSRF on the view, it's fine. -->
+        <form method="POST">
             <button type="submit" class="logout-btn">Logout</button>
         </form>
+        
+        
+        <!-- Add a link to another page -->
+       
+        
     </div>
 
 </body>

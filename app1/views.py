@@ -14,50 +14,11 @@ from django.contrib import messages
 from .forms import LoginForm
 from .models import User
 
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            
-            # Authenticate user
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('home')  # Redirect to home after successful login
-            else:
-                messages.error(request, "Invalid credentials")
-    else:
-        form = LoginForm()
-    
-    return render(request, 'login.html', {'form': form})
-
-# Home View (Protected by login_required)
-@login_required
-def home(request):
-    return render(request, 'home.html')
-
-# Login View
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            print(username,password)
-            
-            # Authenticate user
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)  # Log the user in
-                return redirect('home')  # Redirect to a home page or dashboard
-            else:
-                messages.error(request, "Invalid credentials")
-    else:
-        form = LoginForm()
-    
-    return render(request, 'login.html', {'form': form})
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from .forms import LoginForm
+from .models import User  
 from .models import Location
 from django.db import IntegrityError
 from django.shortcuts import render, redirect
@@ -73,13 +34,65 @@ from django.shortcuts import render, redirect
 from .forms import SignupForm
 from .models import User, Location
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.db import IntegrityError
+from .forms import SignupForm
+from .models import User, Location
+
+
+from django.shortcuts import render, redirect
+from .forms import SignupForm
+
+def login_view(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            # Get the cleaned data from the form
+            uid = form.cleaned_data['userid']
+            password = form.cleaned_data['password']
+            
+            # Try to get the user by the provided userid (assuming User model has a field 'id')
+            try:
+                user = User.objects.get(userid=uid)
+            except User.DoesNotExist:
+                messages.error(request, "Invalid credentials")
+                return render(request, 'login.html', {'form': form})
+
+            # Now, authenticate the user
+            if user.check_password(password):  # Use the check_password method for hashed passwords
+                
+                return redirect('home')  # Redirect to home after successful login
+            else:
+                messages.error(request, "Invalid credentials")
+
+    else:
+        form = LoginForm()
+
+    return render(request, 'login.html', {'form': form})
+
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
+
+def home(request):
+    if request.method == 'POST':
+        logout(request)  # Logs the user out
+        return redirect('login')  # Redirect to 'some_page' after logout
+
+    return render(request, 'home.html')
+
+
 def signup(request):
     last_user_id = None  # Default to None, if no users are registered yet.
 
     # Fetch the last created user (most recent sign up)
-    last_user = User.objects.last()
-    if last_user:
-        last_user_id = last_user.userid+1
+   
+    last_user_id = User.objects.last().userid + 1
+    
 
     if request.method == 'POST':
         form = SignupForm(request.POST)
