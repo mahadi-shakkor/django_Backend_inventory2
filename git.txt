@@ -3,7 +3,7 @@ Push Subsequent Changes: After making changes to your project, stage, commit, an
 bash
 Copy code
 git add .
-git commit -m "Description of changes"
+git commit -m "So far So good"
 git push origin main
 
 

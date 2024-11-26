@@ -11,3 +11,16 @@ class SignupForm(forms.Form):
     email = forms.EmailField()
     phone = forms.CharField(max_length=15)
     password = forms.CharField(widget=forms.PasswordInput())
+    Users_Type = [
+        ('', 'Select a User Type'),  # This will be the default option, with an empty value
+        ('a', 'Aggricultural Officer'),
+        ('f', 'Farmer'),
+        ('c', 'Customer'),
+    ]
+    
+    Choosed_User_Type= forms.ChoiceField(
+        choices=Users_Type,
+        required=True,
+        label=" User Type "
+    )
+    

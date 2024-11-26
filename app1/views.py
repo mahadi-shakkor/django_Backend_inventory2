@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .forms import LoginForm
+from .models import User
 
 def login_view(request):
     if request.method == 'POST':
@@ -44,6 +45,7 @@ def login_view(request):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            print(username,password)
             
             # Authenticate user
             user = authenticate(request, username=username, password=password)
@@ -57,21 +59,20 @@ def login_view(request):
     
     return render(request, 'login.html', {'form': form})
 
-# Create your views here.
 def signup(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
             # Process the form data and save it (e.g., create user or store data)
-            # For example, you can create a user (or just print form data for now)
             first_name = form.cleaned_data['first_name']
             last_name = form.cleaned_data['last_name']
             email = form.cleaned_data['email']
             phone = form.cleaned_data['phone']
             password = form.cleaned_data['password']
+            user_choice = form.cleaned_data['Choosed_User_Type']  # Corrected field name
             
             # Here, you could save the user in the database or perform further actions
-            print(f"Saving user: {first_name} {last_name}, {email}, {phone}, {password}")
+            print(f"Saving user: {user_choice}, {first_name}, {last_name}, {email}, {phone}, {password}")
             
             # Redirect to a success page or login page
             return redirect('login')  # Assuming you have a 'login' route
