@@ -3,7 +3,7 @@ Push Subsequent Changes: After making changes to your project, stage, commit, an
 bash
 Copy code
 git add .
-git commit -m " from db user can back login page  "
+git commit -m " SUCCESS fully Alter table in mysql workbeck then import the changes in django  and show no erroe  "
 git push origin main
 
 

@@ -17,17 +17,6 @@ class AgriculturalOfficer(models.Model):
         db_table = 'agricultural_officer'
 
 
-class App1Post(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=255)
-    slug = models.CharField(unique=True, max_length=255)
-    created_on = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'app1_post'
-
-
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
@@ -298,6 +287,8 @@ class Harvest(models.Model):
     season = models.CharField(db_column='SEASON', max_length=50)  # Field name made lowercase.
     qualitygrade = models.CharField(db_column='QualityGrade', max_length=10, blank=True, null=True)  # Field name made lowercase.
     notes = models.TextField(db_column='Notes', blank=True, null=True)  # Field name made lowercase.
+    product = models.ForeignKey('Product', models.DO_NOTHING, db_column='Product_ID', blank=True, null=True)  # Field name made lowercase.
+    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='USERID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -306,6 +297,7 @@ class Harvest(models.Model):
 
 class HarvestFields(models.Model):
     fields_id = models.AutoField(db_column='FIELDS_ID', primary_key=True)  # Field name made lowercase.
+    userid = models.ForeignKey('User', models.DO_NOTHING, db_column='USERID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -552,12 +544,6 @@ class User(models.Model):
     class Meta:
         managed = False
         db_table = 'user'
-
-    def check_password(self, raw_password):
-        """
-        Check if the provided password matches the stored plain-text password.
-        """
-        return self.password == raw_password
 
 
 class Wirehouse(models.Model):

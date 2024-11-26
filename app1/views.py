@@ -105,11 +105,34 @@ def signup(request):
             A = ""
             F = ""
             C = ""
+            S=""
+            N=""
+            W=""
+            D=""
+            R=""
 
+#   (, 'Aggricultural Officer'),
+#         (', 'Farmer'),
+#         (, 'Customer'),
+#         (', 'Supplier'),
+#         (, 'Neutroshonist'),
+#         (', 'Wirehouse Manager'),
+#         ('', 'Distributor Company'),
+#         (', 'Reatailer')
             if user_choice == "a":
                 A += user_choice
             elif user_choice == "f":
                 F += user_choice
+            elif user_choice == "s":
+                S += user_choice
+            elif user_choice == "n":
+                N += user_choice  
+            elif user_choice == "w":
+                W += user_choice
+            elif user_choice == "d":
+                D += user_choice
+            elif user_choice == "r":
+                R += user_choice           
             else:
                 C += user_choice
 
@@ -133,12 +156,12 @@ def signup(request):
                 email=email,
                 password=password,
                 f=F,
-                s="",
-                n="",
-                w="",
+                s=S,
+                n=N,
+                w=W,
                 c=C,
-                d="",
-                r="",
+                d=D,
+                r=R,
                 a=A,
                 location=location
             )
@@ -148,6 +171,11 @@ def signup(request):
                 A = ""
                 F = ""
                 C = ""
+                S = ""
+                N = ""
+                W = ""
+                D = ""
+                R = ""
 
                 # Redirect to a success page or login page
                 return redirect('login')
