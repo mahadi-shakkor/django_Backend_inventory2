@@ -545,6 +545,10 @@ class User(models.Model):
         managed = False
         db_table = 'user'
 
+    def check_password(self, raw_password):
+        return self.password == raw_password
+    
+
 
 class Wirehouse(models.Model):
     warehousehouseid = models.AutoField(db_column='WarehouseHouseID', primary_key=True)  # Field name made lowercase.
