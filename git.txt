@@ -33,6 +33,9 @@ python manage.py migrate
 
 
 ---
+f"ID: {self.ID}, Data1: {self.data1}, Data2: {self.data2}"
+python manage.py inspectdb > models.py
+
 make crude
 app
  ====tempalte
